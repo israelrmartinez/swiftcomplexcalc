@@ -57,6 +57,13 @@ class Calculator {
         let result = operation(first, second)
         return result
     }
+    
+    func count(_ args: [Int]) -> Int {
+        if args.count > 0 {
+            return args[args.count - 1] ?? 0
+        }
+        return 0
+    }
 }
 
 let calc = Calculator()  // Don't change this declaration name; it's used in all the tests below
@@ -77,8 +84,8 @@ calc.divide(lhs: 2, rhs: 2) == 1
 
 calc.add([1, 2, 3, 4, 5]) == 15
 calc.multiply([1, 2, 3, 4, 5]) == 120
-//calc.count([1, 2, 3, 4, 5, 6, 7, 8]) == 8
-//calc.count([]) == 0
+calc.count([1, 2, 3, 4, 5, 6, 7, 8]) == 8
+calc.count([]) == 0
 //calc.avg([2, 2, 2, 2, 2, 2]) == 2
 //calc.avg([1, 2, 3, 4, 5]) == 3
 //calc.avg([1]) == 1
