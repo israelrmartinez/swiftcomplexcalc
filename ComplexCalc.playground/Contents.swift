@@ -60,9 +60,20 @@ class Calculator {
     
     func count(_ args: [Int]) -> Int {
         if args.count > 0 {
-            return args[args.count - 1] ?? 0
+            return args[args.count - 1]
         }
         return 0
+    }
+    
+    func avg(_ args: [Int]) -> Int {
+        var index : Int = 0
+        var total : Int = 0
+        repeat {
+            let val = args[index]
+            total += val
+            index += 1
+        } while index < args.count
+        return total / args.count
     }
 }
 
@@ -86,9 +97,9 @@ calc.add([1, 2, 3, 4, 5]) == 15
 calc.multiply([1, 2, 3, 4, 5]) == 120
 calc.count([1, 2, 3, 4, 5, 6, 7, 8]) == 8
 calc.count([]) == 0
-//calc.avg([2, 2, 2, 2, 2, 2]) == 2
-//calc.avg([1, 2, 3, 4, 5]) == 3
-//calc.avg([1]) == 1
+calc.avg([2, 2, 2, 2, 2, 2]) == 2
+calc.avg([1, 2, 3, 4, 5]) == 3
+calc.avg([1]) == 1
 //
 //calc.mathOp(args: [1, 2, 3], beg: 0, op: { $0 + $1 }) == 6
 //    // this is (((0 op 1) op 2) op 3)
