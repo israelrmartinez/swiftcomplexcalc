@@ -88,10 +88,29 @@ calc.subtract(lhs: 2, rhs: 2) == 0
 calc.multiply(lhs: 2, rhs: 2) == 4
 calc.divide(lhs: 2, rhs: 2) == 1
 
-//calc.mathOp(lhs: 5, rhs: 5, op: { (lhs: Int, rhs: Int) -> Int in (lhs + rjs) + (lhs * rhs) }) == 35
-//    // This style is one way of writing an anonymous function
-//calc.mathOp(lhs: 10, rhs: -5, op: { ($0 + $1) + ($0 - $1) }) == 20
+calc.mathOp(lhs: 5, rhs: 5, op: { (lhs: Int, rhs: Int) -> Int in (lhs + rhs) + (lhs * rhs) }) == 35
+    // This style is one way of writing an anonymous function
+calc.mathOp(lhs: 10, rhs: -5, op: { ($0 + $1) + ($0 - $1) }) == 20
     // This is the second, more terse, style; either works
+
+//func mathOp(left : Int, right : Int, op : (Int, Int) -> Int) -> Int {
+//    return op(left, right)
+//}
+//let result = mathOp(left: 1, right: 2) { $0 + $1 }
+//print("Result = \(result)")
+//
+//let addFunc = { (left : Int, right : Int) -> Int in return left + right }
+//print("#1 ~ 1 + 2 = \(addFunc(1,2))")
+//
+//let add2Func : (Int, Int) -> Int = { (left, right) in return left + right }
+//print("#2 ~ 1 + 2 = \(add2Func(1,2))")
+//
+//let add3Func : (Int, Int) -> Int = { (left, right) in left + right }
+//print("#3 ~ 1 + 2 = \(add3Func(1,2))")
+//
+//let add4Func : (Int, Int) -> Int = { $0 + $1 }
+//print("#4 ~ 1 + 2 = \(add4Func(1,2))")
+
 
 calc.add([1, 2, 3, 4, 5]) == 15
 calc.multiply([1, 2, 3, 4, 5]) == 120
@@ -108,10 +127,10 @@ calc.avg([1]) == 1
 //calc.mathOp(args: [1, 1, 1, 1, 1], beg: 1, op: { $0 * $1 }) == 1
 //    // this is (((((1 op 1) op 1) op 1) op 1) op 1)
 //
-//let p1 = (5, 5)
-//let p2 = (12, -27)
-//let p3 = (-4, 4)
-//let p4 = (0, 0)
+let p1 = (5, 5)
+let p2 = (12, -27)
+let p3 = (-4, 4)
+let p4 = (0, 0)
 //calc.add(lhs: p1, rhs: p2) == (17, -22)
 //calc.subtract(lhs: p1, rhs: p2) == (-7, 32)
 //calc.add(lhs: p4, rhs: p4) == (0, 0)
