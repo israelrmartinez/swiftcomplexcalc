@@ -21,11 +21,31 @@ class Calculator {
         return args[0]
     }
     
-    func subtract(lhs first: Int, rhs second: Int) -> Int{
+    func add(lhs first: (Int, Int), rhs second: (Int, Int)) -> (Int, Int) {
+        return (first.0 + second.0, first.1 + second.1)
+    }
+    
+    func add(lhs first: [String: Int], rhs second: [String: Int]) -> [String: Int] {
+        let newX = (first["x"] ?? 0) + (second["x"] ?? 0)
+        let newY = (first["y"] ?? 0) + (second["y"] ?? 0)
+        return ["x": newX, "y": newY]
+    }
+    
+    func subtract(lhs first: Int, rhs second: Int) -> Int {
         return first - second
     }
     
-    func multiply(lhs first: Int, rhs second: Int) -> Int{
+    func subtract(lhs first: (Int, Int), rhs second: (Int, Int)) -> (Int, Int) {
+        return (first.0 - second.0, first.1 - second.1)
+    }
+    
+    func subtract(lhs first: [String: Int], rhs second: [String: Int]) -> [String: Int] {
+        let newX = (first["x"] ?? 0) - (second["x"] ?? 0)
+        let newY = (first["y"] ?? 0) - (second["y"] ?? 0)
+        return ["x": newX, "y": newY]
+    }
+    
+    func multiply(lhs first: Int, rhs second: Int) -> Int {
         return first * second
     }
     
@@ -49,13 +69,30 @@ class Calculator {
         return args[0]
     }
     
-    func divide(lhs first: Int, rhs second: Int) -> Int{
+    func divide(lhs first: Int, rhs second: Int) -> Int {
         return first / second
     }
     
     func mathOp(lhs first: Int, rhs second: Int, op operation: (Int, Int) -> Int) -> Int {
         let result = operation(first, second)
         return result
+    }
+    
+    func mathOp(args array: [Int], beg first: Int, op operation: (Int, Int) -> Int) -> Int {
+        var index : Int = 0
+        var total : Int = first
+        repeat {
+            if (index == 0) {
+                let val = operation(first, array[index])
+                index += 1
+                total = val
+            } else {
+                let val = operation(total, array[index])
+                total = val
+                index += 1
+            }
+        } while index < array.count
+        return total
     }
     
     func count(_ args: [Int]) -> Int {
@@ -93,24 +130,6 @@ calc.mathOp(lhs: 5, rhs: 5, op: { (lhs: Int, rhs: Int) -> Int in (lhs + rhs) + (
 calc.mathOp(lhs: 10, rhs: -5, op: { ($0 + $1) + ($0 - $1) }) == 20
     // This is the second, more terse, style; either works
 
-//func mathOp(left : Int, right : Int, op : (Int, Int) -> Int) -> Int {
-//    return op(left, right)
-//}
-//let result = mathOp(left: 1, right: 2) { $0 + $1 }
-//print("Result = \(result)")
-//
-//let addFunc = { (left : Int, right : Int) -> Int in return left + right }
-//print("#1 ~ 1 + 2 = \(addFunc(1,2))")
-//
-//let add2Func : (Int, Int) -> Int = { (left, right) in return left + right }
-//print("#2 ~ 1 + 2 = \(add2Func(1,2))")
-//
-//let add3Func : (Int, Int) -> Int = { (left, right) in left + right }
-//print("#3 ~ 1 + 2 = \(add3Func(1,2))")
-//
-//let add4Func : (Int, Int) -> Int = { $0 + $1 }
-//print("#4 ~ 1 + 2 = \(add4Func(1,2))")
-
 
 calc.add([1, 2, 3, 4, 5]) == 15
 calc.multiply([1, 2, 3, 4, 5]) == 120
@@ -120,23 +139,24 @@ calc.avg([2, 2, 2, 2, 2, 2]) == 2
 calc.avg([1, 2, 3, 4, 5]) == 3
 calc.avg([1]) == 1
 //
-//calc.mathOp(args: [1, 2, 3], beg: 0, op: { $0 + $1 }) == 6
-//    // this is (((0 op 1) op 2) op 3)
-//calc.mathOp(args: [1, 2, 3, 4, 5], beg: 0, op: { $0 + $1 }) == 15
-//    // this is (((((0 op 1) op 2) op 3) op 4) op 5)
-//calc.mathOp(args: [1, 1, 1, 1, 1], beg: 1, op: { $0 * $1 }) == 1
-//    // this is (((((1 op 1) op 1) op 1) op 1) op 1)
-//
+calc.mathOp(args: [1, 2, 3], beg: 0, op: { $0 + $1 }) == 6
+    // this is (((0 op 1) op 2) op 3)
+calc.mathOp(args: [1, 2, 3, 4, 5], beg: 0, op: { $0 + $1 }) == 15
+    // this is (((((0 op 1) op 2) op 3) op 4) op 5)
+calc.mathOp(args: [1, 1, 1, 1, 1], beg: 1, op: { $0 * $1 }) == 1
+    // this is (((((1 op 1) op 1) op 1) op 1) op 1)
+
+
 let p1 = (5, 5)
 let p2 = (12, -27)
 let p3 = (-4, 4)
 let p4 = (0, 0)
-//calc.add(lhs: p1, rhs: p2) == (17, -22)
-//calc.subtract(lhs: p1, rhs: p2) == (-7, 32)
-//calc.add(lhs: p4, rhs: p4) == (0, 0)
-//calc.add(lhs: p3, rhs: p4) == (-4, 4)
-//
-//let pd1 = ["x": 5, "y": 5]
-//let pd2 = ["x": -4, "y": 4]
-//calc.add(lhs: pd1, rhs: pd2) == ["x": 1, "y": 9]
-//calc.subtract(lhs: pd1, rhs: pd2) == ["x": 9, "y": 1]
+calc.add(lhs: p1, rhs: p2) == (17, -22)
+calc.subtract(lhs: p1, rhs: p2) == (-7, 32)
+calc.add(lhs: p4, rhs: p4) == (0, 0)
+calc.add(lhs: p3, rhs: p4) == (-4, 4)
+
+let pd1 = ["x": 5, "y": 5]
+let pd2 = ["x": -4, "y": 4]
+calc.add(lhs: pd1, rhs: pd2) == ["x": 1, "y": 9]
+calc.subtract(lhs: pd1, rhs: pd2) == ["x": 9, "y": 1]
